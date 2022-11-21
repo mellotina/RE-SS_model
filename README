@@ -1,0 +1,7 @@
+<Reliablity performance assessment model of RMS applied in different configuration orders>
+
+This python file simulates for a model assessing reliablity performance of RMS applied in different configuration orders.
+The illustrative case shows it applied in failure rate with Weibull distributions, but it could be adapted to other distributions by simply changing the pdf, cdf and failure rate functions.
+Further details of usage, algorithms and maintenance will be added later. 
+
+Tian ZHANG
