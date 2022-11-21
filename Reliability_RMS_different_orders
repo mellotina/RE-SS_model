@@ -1,0 +1,321 @@
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 22 10:31:47 2022
+
+@author: zhangtian
+"""
+
+import sympy
+#from sympy import *
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+import random
+
+
+
+
+font1={'family':'Times New Roman',
+       'weight':'normal',
+       'size':13,}
+font2={'family':'Times New Roman',
+       'weight':'normal',
+       'size':13,}
+
+systemTime=list(np.linspace(0.001,1,1000))
+ld_1=[1]*1000
+ld_2=[1]*1000
+ld_3=[1]*1000
+ld_4=[1]*1000
+ld_5=[1]*1000
+ld_6=[1]*1000
+
+f_1=[1]*1000
+f_2=[1]*1000
+f_3=[1]*1000
+f_4=[1]*1000
+f_5=[1]*1000
+f_6=[1]*1000
+
+r_1=[1]*1000
+r_2=[1]*1000
+r_3=[1]*1000
+r_4=[1]*1000
+r_5=[1]*1000
+r_6=[1]*1000
+
+conditionP_1=[1]*1000
+conditionP_2=[1]*1000
+conditionP_3=[1]*1000
+conditionP_4=[1]*1000
+conditionP_5=[1]*1000
+conditionP_6=[1]*1000
+
+#configuration order 1 
+b_1=[0.41, 0.31, 2.38, 0.51, 0.42, 0.53, 0.51, 0.47, 0.36, 0.39]
+new_e_1=[2.46, 2.83, 0.67, 0.62, 0.43, 0.69, 0.64, 0.53, 0.22, 0.3]
+
+#configuration order 2
+b_2=[0.39, 0.36, 0.47, 0.51, 0.53, 0.42, 0.51, 2.38, 0.31, 0.41]
+new_e_2=[2.53, 2.63, 2.54, 2.52, 2.53, 2.24, 2.6, 1.77, 0.49, 1.12]
+
+b_3=[0.36,0.51,0.51,0.42,0.39,0.47,0.53,2.38,0.41,0.31]
+new_e_3=[2.78, 2.07, 2.07, 1.97, 1.84, 2.19, 2.37, 1.73, 0.96, 0.4]
+
+b_4=[0.42, 0.47, 0.53, 0.31, 0.36, 0.41, 0.51, 0.39, 2.38, 0.51]
+new_e_4=[2.37, 2.15, 2.06, 1.43, 1.82, 2.14, 2.56, 1.92, 1.97, 1.7]
+
+b_5=[0.51, 0.31, 0.47, 0.39, 0.36, 2.38, 0.41, 0.42, 0.51, 0.53]
+new_e_5=[1.95, 2.66, 2.67, 2.59, 2.42, 1.4, 1.13, 1.18, 1.61, 1.69]
+
+b_6=[0.53, 0.36, 0.41, 0.51, 0.39, 0.51, 0.31, 0.42, 2.38, 0.47]
+new_e_6=[1.88, 2.57, 2.59, 2.6, 2.32, 2.74, 1.46, 2.48, 2.02, 1.71]
+
+def weib_lambda(x,beta,eta):
+        return (beta / eta) * (x / eta)**(beta - 1) 
+    
+def F(x,b,e):
+    weibull_unreliability=1-math.exp(-((x)**b)/e)
+    return weibull_unreliability 
+def R(x,b,e):
+    weibull_reliability=math.exp(-((x)**b)/e)
+    return weibull_reliability
+#%%
+
+
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_1[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_1[i],new_e_1[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_2[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_2[i],new_e_2[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_3[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_3[i],new_e_3[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_4[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_4[i],new_e_4[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_5[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_5[i],new_e_5[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            ld_6[i*100+j*10+k]= weib_lambda((i*100+j*10+k+1)/1000,b_6[i],new_e_6[i])
+
+plt.xlabel("Processing time $t$/year",font1)
+plt.ylabel("Failure rate $\lambda(t)$",font1)
+plt.grid()
+plt.xlim(0,1)
+plt.ylim(0,3)
+l1,=plt.plot(systemTime,ld_1,alpha=0.8,label="$\gamma=1$")
+l2,=plt.plot(systemTime,ld_2,alpha=0.8,label="$\gamma=2$")
+l3,=plt.plot(systemTime,ld_3,alpha=0.8,label="$\gamma=3$")
+l4,=plt.plot(systemTime,ld_4,alpha=0.8,label="$\gamma=4$")
+l5,=plt.plot(systemTime,ld_5,alpha=0.8,label="$\gamma=5$")
+l6,=plt.plot(systemTime,ld_6,alpha=0.8,label="$\gamma=6$")
+plt.legend(handles=[l1,l2,l3,l4,l5,l6])
+#plt.savefig("fig 8 model 2 failure rate.png",dpi=300)
+
+#%%
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_1[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_1[i],new_e_1[i])
+            r_1[i*100+j*10+k]=R((i*100+j*10+k+1)/1000,b_1[i],new_e_1[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_2[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_2[i],new_e_2[i])
+            r_2[i*100+j*10+k]=R((i*100+j*10+k+1)/1000,b_2[i],new_e_2[i])
+
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_3[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_3[i],new_e_3[i])
+            r_3[i*100+j*10+k]= R((i*100+j*10+k+1)/1000,b_3[i],new_e_3[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_4[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_4[i],new_e_4[i])
+            r_4[i*100+j*10+k]= R((i*100+j*10+k+1)/1000,b_4[i],new_e_4[i])
+
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_5[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_5[i],new_e_5[i])
+            r_5[i*100+j*10+k]= R((i*100+j*10+k+1)/1000,b_5[i],new_e_5[i])
+for i in range(10):
+    for j in range(10):
+        for k in range(10):
+            f_6[i*100+j*10+k]= F((i*100+j*10+k+1)/1000,b_6[i],new_e_6[i])
+            r_6[i*100+j*10+k]= R((i*100+j*10+k+1)/1000,b_6[i],new_e_6[i])
+            
+plt.xlabel("Processing time $t$/year",font1)
+plt.ylabel("Unreliability $F(t)$",font1)
+plt.grid()
+plt.xlim(0,1)
+plt.ylim(0,1)
+
+f1,=plt.plot(systemTime,f_1,alpha=0.8,label="$\gamma=1$")
+f2,=plt.plot(systemTime,f_2,alpha=0.8,label="$\gamma=2$")
+f3,=plt.plot(systemTime,f_3,alpha=0.8,label="$\gamma=3$")
+f4,=plt.plot(systemTime,f_4,alpha=0.8,label="$\gamma=4$")
+f5,=plt.plot(systemTime,f_5,alpha=0.8,label="$\gamma=5$")
+f6,=plt.plot(systemTime,f_6,alpha=0.8,label="$\gamma=6$")
+plt.legend(handles=[f1,f2,f3,f4,f5,f6])
+#plt.savefig("fig 9 Unreliability -- all orders.png",dpi=300)
+
+#%%
+
+plt.xlabel("Processing time $t$/year",font1)
+plt.ylabel("Reliability $R(t)$",font1)
+plt.grid()
+plt.xlim(0,1)
+plt.ylim(0,1)
+f1,=plt.plot(systemTime,r_1,alpha=0.8,label="$\gamma=1$")
+f2,=plt.plot(systemTime,r_2,alpha=0.8,label="$\gamma=2$")
+f3,=plt.plot(systemTime,r_3,alpha=0.8,label="$\gamma=3$")
+f4,=plt.plot(systemTime,r_4,alpha=0.8,label="$\gamma=4$")
+f5,=plt.plot(systemTime,r_5,alpha=0.8,label="$\gamma=5$")
+f6,=plt.plot(systemTime,r_6,alpha=0.8,label="$\gamma=6$")
+plt.legend(handles=[f1,f2,f3,f4,f5,f6])
+#plt.savefig("fig 9 Reliability -- all orders.png",dpi=300)
+
+
+#%%
+
+def generateConditionP(Relia,b,e):
+    conditionP=[0]*1000
+    conditionP[0]=Relia[0]
+    for i in range(1,1000):
+        conditionP[i]=Relia[i]/Relia[i-1]
+    
+        
+    for k in range(1,10):
+    #     print("before",conditionP[100*k])
+        print((1-F(((100*k+1)/1000),b[k-1],e[k-1]))/Relia[100*k-1])
+        conditionP[100*k]=(1-F(((100*k+1)/1000),b[k-1],e[k-1]))/Relia[100*k-1]
+    #     print('after',conditionP[100*k])
+    return conditionP
+#%%
+conditionP_1=generateConditionP(r_1,b_1,new_e_1)
+conditionP_2=generateConditionP(r_2,b_2,new_e_2)
+conditionP_3=generateConditionP(r_3,b_3,new_e_3)
+conditionP_4=generateConditionP(r_4,b_4,new_e_4)
+conditionP_5=generateConditionP(r_5,b_5,new_e_5)
+conditionP_6=generateConditionP(r_6,b_6,new_e_6)
+
+
+cp1,=plt.plot(systemTime,conditionP_1,alpha=0.8,label="$\gamma=1$")
+cp2,=plt.plot(systemTime,conditionP_2,alpha=0.8,label="$\gamma=2$")
+cp3,=plt.plot(systemTime,conditionP_3,alpha=0.8,label="$\gamma=3$")
+cp4,=plt.plot(systemTime,conditionP_4,alpha=0.8,label="$\gamma=4$")
+cp5,=plt.plot(systemTime,conditionP_5,alpha=0.8,label="$\gamma=5$")
+cp6,=plt.plot(systemTime,conditionP_6,alpha=0.8,label="$\gamma=6$")
+
+plt.ylim(0.995,1)
+plt.xlim(0,1)
+plt.grid()
+plt.xlabel("Processing step",font1)
+plt.ylabel("Conditional Probability",font1)
+plt.legend(handles=[cp1,cp2,cp3,cp4,cp5,cp6])
+#plt.savefig("fig 10 ConditionalP.png",dpi=300,bbox_inches="tight")
+
+
+
+#%%
+#P(Failure=0)
+
+
+    
+
+def FailureProportion(ConditionalP,n,iterationTime): #n=1,2,3,4,5,6,7,8,9,10
+    
+    fail=[1]*iterationTime
+    #failure=[1]*n*100
+    
+    for k in range(iterationTime):
+        rv=[]
+        for i in range(100*n):
+            rv.append(round(random.random(),16))
+        for i in range(0,100):
+            if rv[i]>ConditionalP[i]:
+                fail[k] = 0  
+        for c in range(1,n):
+            for i in range(c*100,c*100+100):
+                if (fail[k]== 1):
+                    if rv[i]>ConditionalP[i]:
+                        fail[k] = 0
+    meanSurviveRate=fail.count(1)/iterationTime
+    print(fail)
+    #plt.plot(systemTime,conditionP_1)
+    #plt.plot(systemTime[0:400],rv)
+    #plt.ylim(0.95,1)
+    print(meanSurviveRate)
+    return meanSurviveRate
+
+#%%
+
+mean1=[]
+mean2=[]
+mean3=[]
+mean4=[]
+mean5=[]
+mean6=[]
+for i in range(10):
+    mean1.append(FailureProportion(conditionP_1,i+1,1000))
+    mean2.append(FailureProportion(conditionP_2,i+1,1000))
+    mean3.append(FailureProportion(conditionP_3,i+1,1000))
+    mean4.append(FailureProportion(conditionP_4,i+1,1000))
+    mean5.append(FailureProportion(conditionP_5,i+1,1000))
+    mean6.append(FailureProportion(conditionP_6,i+1,1000))
+
+    
+#%%
+processingstep=list(np.linspace(0,10,11))
+#biu=len(processingstep)
+#print(processingstep,biu)
+plt.xlim(0,10)
+plt.ylim(0,1)
+a=0.8
+l1,=plt.plot(processingstep,[1]+mean1,alpha = a,label="$\gamma=1$")
+l2,=plt.plot(processingstep,[1]+mean2,alpha = a,label="$\gamma=2$")
+l3,=plt.plot(processingstep,[1]+mean3,alpha = a,label="$\gamma=3$")
+l4,=plt.plot(processingstep,[1]+mean4,alpha = a,label="$\gamma=4$")
+l5,=plt.plot(processingstep,[1]+mean5,alpha = a,label="$\gamma=5$")
+l6,=plt.plot(processingstep,[1]+mean6,alpha = a,label="$\gamma=6$")
+plt.xlabel("Processing step",font1)
+plt.ylabel("P(Failure=0)",font1)
+plt.grid()
+plt.legend(handles=[l1,l2,l3,l4,l5,l6])
+
+#plt.savefig("fig 11 model 2 identical processing step, step= 1000.png",dpi=300,bbox_inches="tight")
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
